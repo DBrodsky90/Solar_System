@@ -1,4 +1,4 @@
-//THREE.ImageUtils.crossOrigin = "";
+
 var container;
 var scene, camera, renderer, controls;
 
@@ -14,17 +14,29 @@ function init() {
 	width = window.innerWidth;
   height = window.innerHeight;
 
-  // SCENE
+  //*******//
+  // SCENE //
+  //*******//
+
   scene = new THREE.Scene();
 
-  // CAMERA
+  //********//
+  // CAMERA //
+  //********//
+
   camera = new THREE.PerspectiveCamera(45, width/height, 1, 100000000);
   camera.position.z = 105000;
 
-  // TRACKBALL CONTROLS
+  //********************//
+  // TRACKBALL CONTROLS //
+  //********************//
+
   controls = new THREE.TrackballControls(camera);
 
-  // LIGHT
+  //*******//
+  // LIGHT //
+  //*******//
+
     // Pointlight at center of sun
   pointLight = new THREE.PointLight(0xffffff, .5);
   scene.add(pointLight);
@@ -37,7 +49,10 @@ function init() {
   pointLight3.position.set(-500000,-500000,-500000);
   scene.add(pointLight3);
 
-  // STAR BACKGROUND
+  //*****************//
+  // STAR BACKGROUND //
+  //*****************//
+
   stars_geom = new THREE.Geometry();
   stars_mat = new THREE.PointCloudMaterial({color:0xbbbbbb, opacity: 0.4, size: .1, sizeAttenuation: false});
   for (var i = 0 ; i < 15000; i++) {
@@ -52,51 +67,110 @@ function init() {
   stars.scale.set(100, 100, 100);
   scene.add(stars);
 
-  // SUN
-  sun_geom = new THREE.SphereGeometry(5000, 30, 30);
+  //*****//
+  // SUN //
+  //****//
+
   sun_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('sun_texture.jpg') %>");
+  sun_geom = new THREE.SphereGeometry(5000, 30, 30);
   sun_texture.anistropy = 8;
   sun_mat = new THREE.MeshPhongMaterial({map: sun_texture, emissive: 0xffffff});
   sun = new THREE.Mesh(sun_geom, sun_mat);
   scene.add(sun);
 
-  // MERCURY
-  mercury_geom = new THREE.SphereGeometry(350, 20, 20);
+  //*********//
+  // MERCURY //
+  //*********//
+
+  // Load the mercury texture
   mercury_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('mercury_texture.jpg') %>")
+  mercury_geom = new THREE.SphereGeometry(350, 20, 20);
   mercury_texture.anistropy = 8;
   mercury_mat = new THREE.MeshLambertMaterial({map: mercury_texture});
   mercury = new THREE.Mesh(mercury_geom, mercury_mat);
+  // Starting position of mercury
   mercury_angle = 50;
   scene.add(mercury);
+  // Creates mercury orbit outline material and geometry
+  mercury_orbit_mat = new THREE.LineBasicMaterial({color: 0xffffff});
+  mercury_orbit_geom = new THREE.CircleGeometry(15000, 2000);
+  // Removes center vertex
+  mercury_orbit_geom.vertices.shift();
+  mercury_orbit = new THREE.Line(mercury_orbit_geom, mercury_orbit_mat);
+  // Add the mercury and its orbit outline to the scene
+  scene.add(mercury);
+  scene.add(mercury_orbit);
 
-  // VENUS
-  venus_geom = new THREE.SphereGeometry(350, 20, 20);
+  //*******//
+  // VENUS //
+  //*******//
+
+  // Load the venus texture
   venus_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('venus_texture.jpg') %>")
+  venus_geom = new THREE.SphereGeometry(350, 20, 20);
   venus_texture.anistropy = 8;
   venus_mat = new THREE.MeshLambertMaterial({map: venus_texture});
   venus = new THREE.Mesh(venus_geom, venus_mat);
+  // Starting position of venus
   venus_angle = 100;
+  // Creates venus orbit outline material and geometry
+  venus_orbit_mat = new THREE.LineBasicMaterial({color: 0xffffff});
+  venus_orbit_geom = new THREE.CircleGeometry(26000, 2000);
+  // Removes center vertex
+  venus_orbit_geom.vertices.shift();
+  venus_orbit = new THREE.Line(venus_orbit_geom, venus_orbit_mat);
+  // Add the venus and its orbit outline to the scene
   scene.add(venus);
+  scene.add(venus_orbit);
 
-  // EARTH
-  earth_geom = new THREE.SphereGeometry(350, 20, 20);
+  //*******//
+  // EARTH //
+  //*******//
+
+  // Loads the earth texture
   earth_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('earth_texture.jpg') %>")
+  earth_geom = new THREE.SphereGeometry(350, 20, 20);
   earth_texture.anistropy = 8;
   earth_mat = new THREE.MeshLambertMaterial({map: earth_texture});
   earth = new THREE.Mesh(earth_geom, earth_mat);
+  // Starting position of earth
   earth_angle = 150;
+  // Creates earth orbit outline material and geometry
+  earth_orbit_mat = new THREE.LineBasicMaterial({color: 0xffffff});
+  earth_orbit_geom = new THREE.CircleGeometry(35000, 2000);
+  // Removes center vertex
+  earth_orbit_geom.vertices.shift();
+  earth_orbit = new THREE.Line(earth_orbit_geom, earth_orbit_mat);
+  // Add the earth and its orbit outline to the scene
   scene.add(earth);
+  scene.add(earth_orbit);
 
-  // MARS
-  mars_geom = new THREE.SphereGeometry(350, 20, 20);
+  //******//
+  // MARS //
+  //******//
+
+  // Loads the mars texture
   mars_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('mars_texture.jpg') %>")
+  mars_geom = new THREE.SphereGeometry(350, 20, 20);
   mars_texture.anistropy = 8;
   mars_mat = new THREE.MeshLambertMaterial({map: mars_texture});
   mars = new THREE.Mesh(mars_geom, mars_mat);
+  // Starting position of mars
   mars_angle = 200;
-  scene.add(mars);	
+  // Creates mars orbit outline material and geometry
+  mars_orbit_mat = new THREE.LineBasicMaterial({color: 0xffffff});
+  mars_orbit_geom = new THREE.CircleGeometry(45000, 2000);
+  // Removes center vertex
+  mars_orbit_geom.vertices.shift();
+  mars_orbit = new THREE.Line(mars_orbit_geom, mars_orbit_mat);
+  // Add the mars and its orbit outline to the scene
+  scene.add(mars);
+  scene.add(mars_orbit);
 
-  // ASTEROID BELT		
+  //***************//
+  // ASTEROID BELT //
+  //**************//
+
   asteroids_geom = new THREE.Geometry();
   asteroids_mat = new THREE.PointCloudMaterial({color: 0x333333, opacity: .1, size: .5, sizeAttenuation: false});
   for (var i = 0 ; i < 10000; i++) {
@@ -112,43 +186,98 @@ function init() {
   asteroid = new THREE.PointCloud(asteroids_geom, asteroids_mat);
   scene.add(asteroid);
 
-  // JUPITER
-  jupiter_geom = new THREE.SphereGeometry(1800, 20, 20);
+  //*********//
+  // JUPITER //
+  //********//
+
+  // Loads the jupiter texture
   jupiter_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('jupiter_texture.jpg') %>")
+  jupiter_geom = new THREE.SphereGeometry(1800, 20, 20);
   jupiter_texture.anistropy = 8;
   jupiter_mat = new THREE.MeshLambertMaterial({map: jupiter_texture});
   jupiter = new THREE.Mesh(jupiter_geom, jupiter_mat);
+  // Starting position of jupiter
   jupiter_angle = 300;
+  // Creates jupiter orbit outline material and geometry
+  jupiter_orbit_mat = new THREE.LineBasicMaterial({color: 0xffffff});
+  jupiter_orbit_geom = new THREE.CircleGeometry(150000, 2000);
+  // Removes center vertex
+  jupiter_orbit_geom.vertices.shift();
+  jupiter_orbit = new THREE.Line(jupiter_orbit_geom, jupiter_orbit_mat);
+  // Add the jupiter and its orbit outline to the scene
   scene.add(jupiter);
+  scene.add(jupiter_orbit);
 
-  // SATURN						    
-  saturn_geom = new THREE.SphereGeometry(800, 20, 20);
+  //********//
+  // SATURN //
+  //********//
+
+  // Loads the saturn texture
   saturn_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('saturn_texture.jpg') %>")
+  saturn_geom = new THREE.SphereGeometry(800, 20, 20);
   saturn_texture.anistropy = 8;
   saturn_mat = new THREE.MeshLambertMaterial({map: saturn_texture});
   saturn = new THREE.Mesh(saturn_geom, saturn_mat);
+  // Starting position of saturn
   saturn_angle = 350;
+  // Creates saturn orbit outline material and geometry
+  saturn_orbit_mat = new THREE.LineBasicMaterial({color: 0xffffff});
+  saturn_orbit_geom = new THREE.CircleGeometry(230000, 2000);
+  // Removes center vertex
+  saturn_orbit_geom.vertices.shift();
+  saturn_orbit = new THREE.Line(saturn_orbit_geom, saturn_orbit_mat);
+  // Add the saturn and its orbit outline to the scene
   scene.add(saturn);
+  scene.add(saturn_orbit);
 
-  // URANUS
-  uranus_geom = new THREE.SphereGeometry(800, 20, 20);
+  //********//
+  // URANUS //
+  //********//
+
+  // Loads the uranus texture
   uranus_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('uranus_texture.jpg') %>")
+  uranus_geom = new THREE.SphereGeometry(800, 20, 20);
   uranus_texture.anistropy = 8;
   uranus_mat = new THREE.MeshLambertMaterial({map: uranus_texture});
   uranus = new THREE.Mesh(uranus_geom, uranus_mat);
+  // Starting position of uranus
   uranus_angle = 400;
+  // Creates uranus orbit outline material and geometry
+  uranus_orbit_mat = new THREE.LineBasicMaterial({color: 0xffffff});
+  uranus_orbit_geom = new THREE.CircleGeometry(300000, 2000);
+  // Removes center vertex
+  uranus_orbit_geom.vertices.shift();
+  uranus_orbit = new THREE.Line(uranus_orbit_geom, uranus_orbit_mat);
+  // Add the uranus and its orbit outline to the scene
   scene.add(uranus);
+  scene.add(uranus_orbit);
 
-  // NEPTUNE
-  neptune_geom = new THREE.SphereGeometry(800, 20, 20);
+  //*********//
+  // NEPTUNE //
+  //*********//
+
+  // Loads the neptune texture
   neptune_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('neptune_texture.jpg') %>")
+  neptune_geom = new THREE.SphereGeometry(800, 20, 20);
   neptune_texture.anistropy = 8;
   neptune_mat = new THREE.MeshLambertMaterial({map: neptune_texture});
   neptune = new THREE.Mesh(neptune_geom, neptune_mat);
+  // Starting position of neptune
   neptune_angle = 450;
+  // Creates neptune orbit outline material and geometry
+  neptune_orbit_mat = new THREE.LineBasicMaterial({color: 0xffffff});
+  neptune_orbit_geom = new THREE.CircleGeometry(380000, 2000);
+  // Removes center vertex
+  neptune_orbit_geom.vertices.shift();
+  neptune_orbit = new THREE.Line(neptune_orbit_geom, neptune_orbit_mat);
+  // Add the neptune and its orbit outline to the scene
   scene.add(neptune);
+  scene.add(neptune_orbit);
 
-	// RENDERS
+  //*********//
+	// RENDERS //
+  //*********//
+
 	renderer = new THREE.WebGLRenderer();
 	renderer.setSize(width,height);
 	renderer.setClearColor(0x000000, 1);
@@ -160,8 +289,16 @@ function init() {
 function animate() {
   requestAnimationFrame(animate);
 
-  // Sun Rotation
+  // Planet Rotations
   sun.rotation.y+=0.005;
+  mercury.rotation.y+=0.005;
+  venus.rotation.y+=0.005;
+  earth.rotation.y+=0.05;
+  mars.rotation.y+=0.005;
+  jupiter.rotation.y+=0.005;
+  saturn.rotation.y+=0.005;
+  neptune.rotation.y+=0.005;
+
 
   // Mercury Revolution
   mercury.position.x = Math.sin(mercury_angle*0.1)*15000;
