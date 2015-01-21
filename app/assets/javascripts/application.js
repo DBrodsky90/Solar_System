@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require three.min
-//= require TrackballControls
+//= require OrbitControls
+//= require threex.domevent
 //= require solar_system
 //= require_tree .

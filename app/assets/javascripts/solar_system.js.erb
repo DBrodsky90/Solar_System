@@ -7,6 +7,12 @@ $(function() {
   init();
   animate();
 
+  //**************//
+  // MOUSE EVENTS //
+  //**************//
+  mouseVector = new THREE.Vector3();
+  window.addEventListener( 'click', changeCameraView, false );
+
 });
 
 function init() {
@@ -28,10 +34,10 @@ function init() {
   camera.position.z = 105000;
 
   //********************//
-  // TRACKBALL CONTROLS //
+  // ORBIT CONTROLS //
   //********************//
 
-  controls = new THREE.TrackballControls(camera);
+  controls = new THREE.OrbitControls(camera);
 
   //*******//
   // LIGHT //
@@ -299,55 +305,55 @@ function animate() {
   requestAnimationFrame(animate);
 
   // Planet Rotations
-  sun.rotation.y+=0.005;
-  mercury.rotation.y+=0.005;
-  venus.rotation.y+=0.005;
-  earth.rotation.y+=0.05;
-  mars.rotation.y+=0.005;
-  jupiter.rotation.y+=0.005;
-  saturn.rotation.y+=0.005;
-  neptune.rotation.y+=0.005;
+  sun.rotation.y+=0.001;
+  mercury.rotation.y+=0.001;
+  venus.rotation.y+=0.001;
+  earth.rotation.y+=0.01;
+  mars.rotation.y+=0.001;
+  jupiter.rotation.y+=0.001;
+  saturn.rotation.y+=0.001;
+  neptune.rotation.y+=0.001;
 
 
   // Mercury Revolution
   mercury.position.x = Math.sin(mercury_angle*0.1)*15000;
   mercury.position.z = Math.cos(mercury_angle*0.1)*15000;
-  mercury_angle += Math.PI/180*2;
+  mercury_angle += Math.PI/180;
 
   // Venus Revolution
   venus.position.x = Math.sin(venus_angle*0.1)*26000;
   venus.position.z = Math.cos(venus_angle*0.1)*26000;
-  venus_angle += Math.PI/180*2;
+  venus_angle += Math.PI/180;
 
   // Earth Revolution
   earth.position.x = Math.sin(earth_angle*0.1)*35000;
   earth.position.z = Math.cos(earth_angle*0.1)*35000;
-  earth_angle += Math.PI/180*2;
+  earth_angle += Math.PI/180;
 
   // Mars Revolution
   mars.position.x = Math.sin(mars_angle*0.1)*45000;
   mars.position.z = Math.cos(mars_angle*0.1)*45000;
-  mars_angle += Math.PI/180*2;		 
+  mars_angle += Math.PI/180;		 
 
   // Jupiter Revolution
   jupiter.position.x = Math.sin(jupiter_angle*0.1)*150000;
   jupiter.position.z = Math.cos(jupiter_angle*0.1)*150000;
-  jupiter_angle += Math.PI/180*2;		 
+  jupiter_angle += Math.PI/180;		 
 
   // Saturn Revolution
   saturn.position.x = Math.sin(saturn_angle*0.1)*230000;
   saturn.position.z = Math.cos(saturn_angle*0.1)*230000;
-  saturn_angle += Math.PI/180*2;	
+  saturn_angle += Math.PI/180;	
 
   // Uranus Revolution
   uranus.position.x = Math.sin(uranus_angle*0.1)*300000;
   uranus.position.z = Math.cos(uranus_angle*0.1)*300000;
-  uranus_angle += Math.PI/180*2;	
+  uranus_angle += Math.PI/180;	
 
   // Neptune Revoltion	 		  		   
   neptune.position.x = Math.sin(neptune_angle*0.1)*380000;
   neptune.position.z = Math.cos(neptune_angle*0.1)*380000;
-  neptune_angle += Math.PI/180*2;	
+  neptune_angle += Math.PI/180;	
 
   render();
 }
@@ -356,3 +362,26 @@ function render() {
   controls.update();
   renderer.render(scene, camera);
 }	
+
+
+function changeCameraView(event) {
+  var objects = [sun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune];
+  var mouse3D = new THREE.Vector3( (event.clientX/window.innerWidth) * 2 - 1,
+  -1*(event.clientY/window.innerHeight) * 2 + 1,
+  0.5 );
+  mouse3D.unproject(camera);
+  mouse3D.sub(camera.position);
+  mouse3D.normalize();
+  var raycaster = new THREE.Raycaster(camera.position, mouse3D);
+  var intersects = raycaster.intersectObjects(objects);
+  // Return the object closest to the camera
+  clickedObject = intersects[0].object;
+  console.log(clickedObject);
+  setInterval(function(){
+    controls.target = clickedObject.position;
+    camera.position.x = clickedObject.position.x;
+    camera.position.y = clickedObject.position.y;
+    camera.position.z = clickedObject.position.z - 5000;
+  }, 6);
+  return intersects[0] ? clickedObject : null;
+}
