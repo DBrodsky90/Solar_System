@@ -38,8 +38,12 @@ function init() {
   //********************//
 
   controls = new THREE.OrbitControls(camera);
+  // Set the zoom max and min distance
   controls.maxDistance = 1000000;
-  controls.minDistance = 15000;
+  controls.minDistance = 5000;
+  // Set the zoom and rotate speed of the camera
+  controls.zoomSpeed = 0.5;
+  controls.rotateSpeed = 0.5;
 
   //*******//
   // LIGHT //
@@ -303,6 +307,10 @@ function init() {
 
 }
 
+  //***********//
+  // FUNCTIONS //
+  //***********//
+
 function animate() {
   requestAnimationFrame(animate);
 
@@ -367,6 +375,7 @@ function render() {
 
 
 function changeCameraView(event) {
+  // Set an array of objects that are clickable
   var objects = [mercury, venus, earth, mars, jupiter, saturn, uranus, neptune];
   var mouse3D = new THREE.Vector3( (event.clientX/window.innerWidth) * 2 - 1,
   -1*(event.clientY/window.innerHeight) * 2 + 1,
@@ -378,12 +387,6 @@ function changeCameraView(event) {
   var intersects = raycaster.intersectObjects(objects);
   // Return the object closest to the camera
   clickedObject = intersects[0].object;
-  console.log(clickedObject);
-  setInterval(function(){
-    controls.target = clickedObject.position;
-    camera.position.x = clickedObject.position.x;
-    camera.position.y = clickedObject.position.y;
-    camera.position.z = clickedObject.position.z + 5000;
-  }, 6);
-  return intersects[0] ? clickedObject : null;
+  // Make the camera look clicked object
+  controls.target = clickedObject.position;
 }
