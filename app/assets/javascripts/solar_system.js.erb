@@ -54,7 +54,7 @@ function init() {
   //*****************//
 
   stars_geom = new THREE.Geometry();
-  stars_mat = new THREE.PointCloudMaterial({color:0xbbbbbb, opacity: 0.4, size: .1, sizeAttenuation: false});
+  stars_mat = new THREE.PointCloudMaterial({color:0xEDF2B1, opacity: 0.4, size: .1, sizeAttenuation: false});
   for (var i = 0 ; i < 15000; i++) {
   	var vertex = new THREE.Vector3();
   	vertex.x = Math.random()*2-1;
@@ -97,6 +97,7 @@ function init() {
   // Removes center vertex
   mercury_orbit_geom.vertices.shift();
   mercury_orbit = new THREE.Line(mercury_orbit_geom, mercury_orbit_mat);
+  mercury_orbit.rotateX(Math.PI/2);
   // Add the mercury and its orbit outline to the scene
   scene.add(mercury);
   scene.add(mercury_orbit);
@@ -119,6 +120,7 @@ function init() {
   // Removes center vertex
   venus_orbit_geom.vertices.shift();
   venus_orbit = new THREE.Line(venus_orbit_geom, venus_orbit_mat);
+  venus_orbit.rotateX(Math.PI/2);
   // Add the venus and its orbit outline to the scene
   scene.add(venus);
   scene.add(venus_orbit);
@@ -141,6 +143,7 @@ function init() {
   // Removes center vertex
   earth_orbit_geom.vertices.shift();
   earth_orbit = new THREE.Line(earth_orbit_geom, earth_orbit_mat);
+  earth_orbit.rotateX(Math.PI/2);
   // Add the earth and its orbit outline to the scene
   scene.add(earth);
   scene.add(earth_orbit);
@@ -163,6 +166,7 @@ function init() {
   // Removes center vertex
   mars_orbit_geom.vertices.shift();
   mars_orbit = new THREE.Line(mars_orbit_geom, mars_orbit_mat);
+  mars_orbit.rotateX(Math.PI/2);
   // Add the mars and its orbit outline to the scene
   scene.add(mars);
   scene.add(mars_orbit);
@@ -171,9 +175,10 @@ function init() {
   // ASTEROID BELT //
   //**************//
 
+  asteroids_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('asteroid_texture.jpg') %>")
   asteroids_geom = new THREE.Geometry();
-  asteroids_mat = new THREE.PointCloudMaterial({color: 0x333333, opacity: .1, size: .5, sizeAttenuation: false});
-  for (var i = 0 ; i < 10000; i++) {
+  asteroids_mat = new THREE.PointCloudMaterial({color: 0x6D6E69, opacity: 1, size: 2, sizeAttenuation: false, map: asteroids_texture});
+  for (var i = 0 ; i < 20000; i++) {
     var vertex = new THREE.Vector3();
     var xRandomDistFromCenter = 55000 + Math.random() * 85000;
     var zRandomDistFromCenter = 55000 + Math.random() * 85000;
@@ -204,6 +209,7 @@ function init() {
   // Removes center vertex
   jupiter_orbit_geom.vertices.shift();
   jupiter_orbit = new THREE.Line(jupiter_orbit_geom, jupiter_orbit_mat);
+  jupiter_orbit.rotateX(Math.PI/2);
   // Add the jupiter and its orbit outline to the scene
   scene.add(jupiter);
   scene.add(jupiter_orbit);
@@ -226,6 +232,7 @@ function init() {
   // Removes center vertex
   saturn_orbit_geom.vertices.shift();
   saturn_orbit = new THREE.Line(saturn_orbit_geom, saturn_orbit_mat);
+  saturn_orbit.rotateX(Math.PI/2);
   // Add the saturn and its orbit outline to the scene
   scene.add(saturn);
   scene.add(saturn_orbit);
@@ -248,6 +255,7 @@ function init() {
   // Removes center vertex
   uranus_orbit_geom.vertices.shift();
   uranus_orbit = new THREE.Line(uranus_orbit_geom, uranus_orbit_mat);
+  uranus_orbit.rotateX(Math.PI/2);
   // Add the uranus and its orbit outline to the scene
   scene.add(uranus);
   scene.add(uranus_orbit);
@@ -270,6 +278,7 @@ function init() {
   // Removes center vertex
   neptune_orbit_geom.vertices.shift();
   neptune_orbit = new THREE.Line(neptune_orbit_geom, neptune_orbit_mat);
+  neptune_orbit.rotateX(Math.PI/2);
   // Add the neptune and its orbit outline to the scene
   scene.add(neptune);
   scene.add(neptune_orbit);
