@@ -8,6 +8,7 @@
 </head>
 <body>
 
+	<!-- Div displaying planet info -->
 	<div class="planet-info">
 		<h2><span class="planet-name"></span></h2>
 		<h4>Diameter (miles) : <span class="diameter"></span></h4>
@@ -18,6 +19,7 @@
 		<h4>Moons : <span class="moons"></span></h4>
 	</div>
 
+	<!-- Div diplaying a list of planets -->
 	<div class="planet-list">
 		<p class="planet sun">Sun</p>
 		<p class="planet mercury">Mercury</p>
@@ -33,10 +35,25 @@
 
 	<footer>
 		Created by David Brodsky
+		<!-- Facebook share button -->
+		<div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button"></div>
+		<!-- Github icon link -->
 		<a href="http://www.github.com/DBrodsky90"><img src="<%= asset_path('github_icon.png') %>" alt=""></a>
+		<!-- Linkedin icon link -->
 		<a href="http://www.linkedin.com/in/davidbrodsky90/"><img src="<%= asset_path('linkedin_icon.png') %>" class="linkedin" alt=""></a>
+		<!-- Mail icon link -->
 		<a href="mailto:DBrodsky90@gmail.com"><img src="<%= asset_path('mail_icon.png') %>" class="mail" alt=""></a>
 	</footer>
+
+	<!-- Facebook Share Button Code -->
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
 
 </body>
 </html>
