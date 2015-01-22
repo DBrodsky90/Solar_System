@@ -4,7 +4,9 @@ var scene, camera, renderer, controls;
 
 $(function() {
 
+  // Sets up the enviroment and creates all planets
   init();
+  // render loop
   animate();
 
   //**************//
@@ -30,8 +32,9 @@ function init() {
   // CAMERA //
   //********//
 
-  camera = new THREE.PerspectiveCamera(45, width/height, 1, 100000000);
-  camera.position.z = 105000;
+  camera = new THREE.PerspectiveCamera(45, width/height, 1, 10000000000);
+  camera.position.z = 1000000;
+  camera.position.y = 100000;
 
   //********************//
   // ORBIT CONTROLS //
@@ -39,39 +42,41 @@ function init() {
 
   controls = new THREE.OrbitControls(camera);
   // Set the zoom max and min distance
-  controls.maxDistance = 1000000;
+  controls.maxDistance = 4000000;
   controls.minDistance = 5000;
   // Set the zoom and rotate speed of the camera
-  controls.zoomSpeed = 0.5;
-  controls.rotateSpeed = 0.5;
+  controls.zoomSpeed = 0.3;
+  controls.rotateSpeed = 0.3;
 
   //*******//
   // LIGHT //
   //*******//
 
     // Pointlight at center of sun
-  pointLight = new THREE.PointLight(0xffffff, .5);
+  var pointLight = new THREE.PointLight(0xffffff, .8);
   scene.add(pointLight);
     // Pointlight at corner of universe
-  pointLight2 = new THREE.PointLight(0xffffff, 1);
-  pointLight2.position.set(500000,500000,500000);
+  var pointLight2 = new THREE.PointLight(0xffffff, .4);
+  pointLight2.position.set(5000000,5000000,5000000);
   scene.add(pointLight2);
     // Pointlight at opposite corner of universe
-  pointLight3 = new THREE.PointLight(0xffffff, 1);
-  pointLight3.position.set(-500000,-500000,-500000);
+  var pointLight3 = new THREE.PointLight(0xffffff, .4);
+  pointLight3.position.set(-5000000,-5000000,-5000000);
   scene.add(pointLight3);
 
   //*****************//
   // STAR BACKGROUND //
   //*****************//
 
-  stars_geom = new THREE.Geometry();
-  stars_mat = new THREE.PointCloudMaterial({color:0xEDF2B1, opacity: 0.4, size: .1, sizeAttenuation: false});
+  var stars_geom = new THREE.Geometry();
+  var stars_mat = new THREE.PointCloudMaterial({color:0xEDF2B1, opacity: 1, size: .1, sizeAttenuation: false});
+  // Make 15000 star particles and give them random positions
   for (var i = 0 ; i < 15000; i++) {
   	var vertex = new THREE.Vector3();
   	vertex.x = Math.random()*2-1;
   	vertex.y = Math.random()*2-1;
   	vertex.z = Math.random()*2-1;
+    // Scales it to make it seem like the stars are far away
   	vertex.multiplyScalar(100000000);
   	stars_geom.vertices.push(vertex);
   }
@@ -83,32 +88,35 @@ function init() {
   // SUN //
   //****//
 
-  sun_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('sun_texture.jpg') %>");
-  sun_geom = new THREE.SphereGeometry(5000, 30, 30);
+  var sun_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('sun_texture.jpg') %>");
+  var sun_geom = new THREE.SphereGeometry(60000, 30, 30);
   sun_texture.anistropy = 8;
-  sun_mat = new THREE.MeshPhongMaterial({map: sun_texture, emissive: 0xffffff});
+  var sun_mat = new THREE.MeshPhongMaterial({map: sun_texture, emissive: 0xffffff});
   sun = new THREE.Mesh(sun_geom, sun_mat);
   scene.add(sun);
+
+  // set focus of camera to the sun when its created
+  controls.target = sun.position;
 
   //*********//
   // MERCURY //
   //*********//
 
   // Load the mercury texture
-  mercury_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('mercury_texture.jpg') %>")
-  mercury_geom = new THREE.SphereGeometry(350, 20, 20);
+  var mercury_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('mercury_texture.jpg') %>")
+  var mercury_geom = new THREE.SphereGeometry(15000, 20, 20);
   mercury_texture.anistropy = 8;
-  mercury_mat = new THREE.MeshLambertMaterial({map: mercury_texture});
+  var mercury_mat = new THREE.MeshLambertMaterial({map: mercury_texture});
   mercury = new THREE.Mesh(mercury_geom, mercury_mat);
   // Starting position of mercury
   mercury_angle = 50;
   scene.add(mercury);
   // Creates mercury orbit outline material and geometry
-  mercury_orbit_mat = new THREE.LineBasicMaterial({color: 0xffffff});
-  mercury_orbit_geom = new THREE.CircleGeometry(15000, 2000);
+  var mercury_orbit_mat = new THREE.LineBasicMaterial({color: 0x1F1F1F});
+  var mercury_orbit_geom = new THREE.CircleGeometry(200000, 5000);
   // Removes center vertex
   mercury_orbit_geom.vertices.shift();
-  mercury_orbit = new THREE.Line(mercury_orbit_geom, mercury_orbit_mat);
+  var mercury_orbit = new THREE.Line(mercury_orbit_geom, mercury_orbit_mat);
   mercury_orbit.rotateX(Math.PI/2);
   // Add the mercury and its orbit outline to the scene
   scene.add(mercury);
@@ -119,19 +127,19 @@ function init() {
   //*******//
 
   // Load the venus texture
-  venus_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('venus_texture.jpg') %>")
-  venus_geom = new THREE.SphereGeometry(350, 20, 20);
+  var venus_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('venus_texture.jpg') %>")
+  var venus_geom = new THREE.SphereGeometry(15000, 20, 20);
   venus_texture.anistropy = 8;
-  venus_mat = new THREE.MeshLambertMaterial({map: venus_texture});
+  var venus_mat = new THREE.MeshLambertMaterial({map: venus_texture});
   venus = new THREE.Mesh(venus_geom, venus_mat);
   // Starting position of venus
   venus_angle = 100;
   // Creates venus orbit outline material and geometry
-  venus_orbit_mat = new THREE.LineBasicMaterial({color: 0xffffff});
-  venus_orbit_geom = new THREE.CircleGeometry(26000, 2000);
+  var venus_orbit_mat = new THREE.LineBasicMaterial({color: 0x240021});
+  var venus_orbit_geom = new THREE.CircleGeometry(300000, 5000);
   // Removes center vertex
   venus_orbit_geom.vertices.shift();
-  venus_orbit = new THREE.Line(venus_orbit_geom, venus_orbit_mat);
+  var venus_orbit = new THREE.Line(venus_orbit_geom, venus_orbit_mat);
   venus_orbit.rotateX(Math.PI/2);
   // Add the venus and its orbit outline to the scene
   scene.add(venus);
@@ -142,19 +150,19 @@ function init() {
   //*******//
 
   // Loads the earth texture
-  earth_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('earth_texture.jpg') %>")
-  earth_geom = new THREE.SphereGeometry(350, 20, 20);
+  var earth_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('earth_texture.jpg') %>")
+  var earth_geom = new THREE.SphereGeometry(15000, 20, 20);
   earth_texture.anistropy = 8;
-  earth_mat = new THREE.MeshLambertMaterial({map: earth_texture});
+  var earth_mat = new THREE.MeshLambertMaterial({map: earth_texture});
   earth = new THREE.Mesh(earth_geom, earth_mat);
   // Starting position of earth
   earth_angle = 150;
   // Creates earth orbit outline material and geometry
-  earth_orbit_mat = new THREE.LineBasicMaterial({color: 0xffffff});
-  earth_orbit_geom = new THREE.CircleGeometry(35000, 2000);
+  var earth_orbit_mat = new THREE.LineBasicMaterial({color: 0x002400});
+  var earth_orbit_geom = new THREE.CircleGeometry(400000, 5000);
   // Removes center vertex
   earth_orbit_geom.vertices.shift();
-  earth_orbit = new THREE.Line(earth_orbit_geom, earth_orbit_mat);
+  var earth_orbit = new THREE.Line(earth_orbit_geom, earth_orbit_mat);
   earth_orbit.rotateX(Math.PI/2);
   // Add the earth and its orbit outline to the scene
   scene.add(earth);
@@ -165,19 +173,19 @@ function init() {
   //******//
 
   // Loads the mars texture
-  mars_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('mars_texture.jpg') %>")
-  mars_geom = new THREE.SphereGeometry(350, 20, 20);
+  var mars_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('mars_texture.jpg') %>")
+  var mars_geom = new THREE.SphereGeometry(15000, 20, 20);
   mars_texture.anistropy = 8;
-  mars_mat = new THREE.MeshLambertMaterial({map: mars_texture});
+  var mars_mat = new THREE.MeshLambertMaterial({map: mars_texture});
   mars = new THREE.Mesh(mars_geom, mars_mat);
   // Starting position of mars
   mars_angle = 200;
   // Creates mars orbit outline material and geometry
-  mars_orbit_mat = new THREE.LineBasicMaterial({color: 0xffffff});
-  mars_orbit_geom = new THREE.CircleGeometry(45000, 2000);
+  var mars_orbit_mat = new THREE.LineBasicMaterial({color: 0x240000});
+  var mars_orbit_geom = new THREE.CircleGeometry(500000, 5000);
   // Removes center vertex
   mars_orbit_geom.vertices.shift();
-  mars_orbit = new THREE.Line(mars_orbit_geom, mars_orbit_mat);
+  var mars_orbit = new THREE.Line(mars_orbit_geom, mars_orbit_mat);
   mars_orbit.rotateX(Math.PI/2);
   // Add the mars and its orbit outline to the scene
   scene.add(mars);
@@ -187,20 +195,20 @@ function init() {
   // ASTEROID BELT //
   //**************//
 
-  asteroids_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('asteroid_texture.jpg') %>")
-  asteroids_geom = new THREE.Geometry();
-  asteroids_mat = new THREE.PointCloudMaterial({color: 0x6D6E69, opacity: 1, size: 2, sizeAttenuation: false, map: asteroids_texture});
+  var asteroids_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('asteroid_texture.jpg') %>")
+  var asteroids_geom = new THREE.SphereGeometry();
+  var asteroids_mat = new THREE.PointCloudMaterial({color: 0x6D6E69, opacity: 1, size: 1.5, sizeAttenuation: false, map: asteroids_texture});
   for (var i = 0 ; i < 20000; i++) {
     var vertex = new THREE.Vector3();
-    var xRandomDistFromCenter = 55000 + Math.random() * 85000;
-    var zRandomDistFromCenter = 55000 + Math.random() * 85000;
+    var xRandomDistFromCenter = 550000 + Math.random() * 259000;
+    var zRandomDistFromCenter = 550000 + Math.random() * 259000;
     randomNum = Math.random()
     vertex.x = 800 * Math.sin(randomNum * Math.PI * 2) + xRandomDistFromCenter * Math.sin(randomNum*Math.PI*2);
     vertex.y = -5000 + Math.random()* 5000;
     vertex.z = 800 * Math.cos(randomNum * Math.PI * 2) + zRandomDistFromCenter * Math.cos(randomNum*Math.PI*2);
     asteroids_geom.vertices.push(vertex);
   }
-  asteroid = new THREE.PointCloud(asteroids_geom, asteroids_mat);
+  var asteroid = new THREE.PointCloud(asteroids_geom, asteroids_mat);
   scene.add(asteroid);
 
   //*********//
@@ -208,19 +216,19 @@ function init() {
   //********//
 
   // Loads the jupiter texture
-  jupiter_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('jupiter_texture.jpg') %>")
-  jupiter_geom = new THREE.SphereGeometry(1800, 20, 20);
+  var jupiter_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('jupiter_texture.jpg') %>")
+  var jupiter_geom = new THREE.SphereGeometry(30000, 20, 20);
   jupiter_texture.anistropy = 8;
-  jupiter_mat = new THREE.MeshLambertMaterial({map: jupiter_texture});
+  var jupiter_mat = new THREE.MeshLambertMaterial({map: jupiter_texture});
   jupiter = new THREE.Mesh(jupiter_geom, jupiter_mat);
   // Starting position of jupiter
   jupiter_angle = 300;
   // Creates jupiter orbit outline material and geometry
-  jupiter_orbit_mat = new THREE.LineBasicMaterial({color: 0xffffff});
-  jupiter_orbit_geom = new THREE.CircleGeometry(150000, 2000);
+  var jupiter_orbit_mat = new THREE.LineBasicMaterial({color: 0x2E1D00});
+  var jupiter_orbit_geom = new THREE.CircleGeometry(900000, 5000);
   // Removes center vertex
   jupiter_orbit_geom.vertices.shift();
-  jupiter_orbit = new THREE.Line(jupiter_orbit_geom, jupiter_orbit_mat);
+  var jupiter_orbit = new THREE.Line(jupiter_orbit_geom, jupiter_orbit_mat);
   jupiter_orbit.rotateX(Math.PI/2);
   // Add the jupiter and its orbit outline to the scene
   scene.add(jupiter);
@@ -231,19 +239,19 @@ function init() {
   //********//
 
   // Loads the saturn texture
-  saturn_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('saturn_texture.jpg') %>")
-  saturn_geom = new THREE.SphereGeometry(800, 20, 20);
+  var saturn_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('saturn_texture.jpg') %>")
+  var saturn_geom = new THREE.SphereGeometry(20000, 20, 20);
   saturn_texture.anistropy = 8;
-  saturn_mat = new THREE.MeshLambertMaterial({map: saturn_texture});
+  var saturn_mat = new THREE.MeshLambertMaterial({map: saturn_texture});
   saturn = new THREE.Mesh(saturn_geom, saturn_mat);
   // Starting position of saturn
   saturn_angle = 350;
   // Creates saturn orbit outline material and geometry
-  saturn_orbit_mat = new THREE.LineBasicMaterial({color: 0xffffff});
-  saturn_orbit_geom = new THREE.CircleGeometry(230000, 2000);
+  var saturn_orbit_mat = new THREE.LineBasicMaterial({color: 0x061F00});
+  var saturn_orbit_geom = new THREE.CircleGeometry(1100000, 5000);
   // Removes center vertex
   saturn_orbit_geom.vertices.shift();
-  saturn_orbit = new THREE.Line(saturn_orbit_geom, saturn_orbit_mat);
+  var saturn_orbit = new THREE.Line(saturn_orbit_geom, saturn_orbit_mat);
   saturn_orbit.rotateX(Math.PI/2);
   // Add the saturn and its orbit outline to the scene
   scene.add(saturn);
@@ -254,19 +262,19 @@ function init() {
   //********//
 
   // Loads the uranus texture
-  uranus_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('uranus_texture.jpg') %>")
-  uranus_geom = new THREE.SphereGeometry(800, 20, 20);
+  var uranus_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('uranus_texture.jpg') %>")
+  var uranus_geom = new THREE.SphereGeometry(20000, 20, 20);
   uranus_texture.anistropy = 8;
-  uranus_mat = new THREE.MeshLambertMaterial({map: uranus_texture});
+  var uranus_mat = new THREE.MeshLambertMaterial({map: uranus_texture});
   uranus = new THREE.Mesh(uranus_geom, uranus_mat);
   // Starting position of uranus
   uranus_angle = 400;
   // Creates uranus orbit outline material and geometry
-  uranus_orbit_mat = new THREE.LineBasicMaterial({color: 0xffffff});
-  uranus_orbit_geom = new THREE.CircleGeometry(300000, 2000);
+  var uranus_orbit_mat = new THREE.LineBasicMaterial({color: 0x002D2E});
+  var uranus_orbit_geom = new THREE.CircleGeometry(1300000, 5000);
   // Removes center vertex
   uranus_orbit_geom.vertices.shift();
-  uranus_orbit = new THREE.Line(uranus_orbit_geom, uranus_orbit_mat);
+  var uranus_orbit = new THREE.Line(uranus_orbit_geom, uranus_orbit_mat);
   uranus_orbit.rotateX(Math.PI/2);
   // Add the uranus and its orbit outline to the scene
   scene.add(uranus);
@@ -277,19 +285,19 @@ function init() {
   //*********//
 
   // Loads the neptune texture
-  neptune_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('neptune_texture.jpg') %>")
-  neptune_geom = new THREE.SphereGeometry(800, 20, 20);
+  var neptune_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('neptune_texture.jpg') %>")
+  var neptune_geom = new THREE.SphereGeometry(20000, 20, 20);
   neptune_texture.anistropy = 8;
-  neptune_mat = new THREE.MeshLambertMaterial({map: neptune_texture});
+  var neptune_mat = new THREE.MeshLambertMaterial({map: neptune_texture});
   neptune = new THREE.Mesh(neptune_geom, neptune_mat);
   // Starting position of neptune
   neptune_angle = 450;
   // Creates neptune orbit outline material and geometry
-  neptune_orbit_mat = new THREE.LineBasicMaterial({color: 0xffffff});
-  neptune_orbit_geom = new THREE.CircleGeometry(380000, 2000);
+  var neptune_orbit_mat = new THREE.LineBasicMaterial({color: 0x00002E, opacity: .2});
+  var neptune_orbit_geom = new THREE.CircleGeometry(1500000, 5000);
   // Removes center vertex
   neptune_orbit_geom.vertices.shift();
-  neptune_orbit = new THREE.Line(neptune_orbit_geom, neptune_orbit_mat);
+  var neptune_orbit = new THREE.Line(neptune_orbit_geom, neptune_orbit_mat);
   neptune_orbit.rotateX(Math.PI/2);
   // Add the neptune and its orbit outline to the scene
   scene.add(neptune);
@@ -326,43 +334,43 @@ function animate() {
 
 
   // Mercury Revolution
-  mercury.position.x = Math.sin(mercury_angle*0.01)*15000;
-  mercury.position.z = Math.cos(mercury_angle*0.01)*15000;
+  mercury.position.x = Math.sin(mercury_angle*0.01)*200000;
+  mercury.position.z = Math.cos(mercury_angle*0.01)*200000;
   mercury_angle += Math.PI/180;
 
   // Venus Revolution
-  venus.position.x = Math.sin(venus_angle*0.01)*26000;
-  venus.position.z = Math.cos(venus_angle*0.01)*26000;
+  venus.position.x = Math.sin(venus_angle*0.01)*300000;
+  venus.position.z = Math.cos(venus_angle*0.01)*300000;
   venus_angle += Math.PI/180;
 
   // Earth Revolution
-  earth.position.x = Math.sin(earth_angle*0.01)*35000;
-  earth.position.z = Math.cos(earth_angle*0.01)*35000;
+  earth.position.x = Math.sin(earth_angle*0.01)*400000;
+  earth.position.z = Math.cos(earth_angle*0.01)*400000;
   earth_angle += Math.PI/180;
 
   // Mars Revolution
-  mars.position.x = Math.sin(mars_angle*0.01)*45000;
-  mars.position.z = Math.cos(mars_angle*0.01)*45000;
+  mars.position.x = Math.sin(mars_angle*0.01)*500000;
+  mars.position.z = Math.cos(mars_angle*0.01)*500000;
   mars_angle += Math.PI/180;		 
 
   // Jupiter Revolution
-  jupiter.position.x = Math.sin(jupiter_angle*0.01)*150000;
-  jupiter.position.z = Math.cos(jupiter_angle*0.01)*150000;
+  jupiter.position.x = Math.sin(jupiter_angle*0.01)*900000;
+  jupiter.position.z = Math.cos(jupiter_angle*0.01)*900000;
   jupiter_angle += Math.PI/180;		 
 
   // Saturn Revolution
-  saturn.position.x = Math.sin(saturn_angle*0.01)*230000;
-  saturn.position.z = Math.cos(saturn_angle*0.01)*230000;
+  saturn.position.x = Math.sin(saturn_angle*0.01)*1100000;
+  saturn.position.z = Math.cos(saturn_angle*0.01)*1100000;
   saturn_angle += Math.PI/180;	
 
   // Uranus Revolution
-  uranus.position.x = Math.sin(uranus_angle*0.01)*300000;
-  uranus.position.z = Math.cos(uranus_angle*0.01)*300000;
+  uranus.position.x = Math.sin(uranus_angle*0.01)*1300000;
+  uranus.position.z = Math.cos(uranus_angle*0.01)*1300000;
   uranus_angle += Math.PI/180;	
 
   // Neptune Revoltion	 		  		   
-  neptune.position.x = Math.sin(neptune_angle*0.01)*380000;
-  neptune.position.z = Math.cos(neptune_angle*0.01)*380000;
+  neptune.position.x = Math.sin(neptune_angle*0.01)*1500000;
+  neptune.position.z = Math.cos(neptune_angle*0.01)*1500000;
   neptune_angle += Math.PI/180;	
 
   render();
@@ -371,12 +379,11 @@ function animate() {
 function render() {
   controls.update();
   renderer.render(scene, camera);
-}	
-
+} 
 
 function changeCameraView(event) {
   // Set an array of objects that are clickable
-  var objects = [mercury, venus, earth, mars, jupiter, saturn, uranus, neptune];
+  var objects = [sun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune];
   var mouse3D = new THREE.Vector3( (event.clientX/window.innerWidth) * 2 - 1,
   -1*(event.clientY/window.innerHeight) * 2 + 1,
   0.5 );
@@ -386,7 +393,12 @@ function changeCameraView(event) {
   var raycaster = new THREE.Raycaster(camera.position, mouse3D);
   var intersects = raycaster.intersectObjects(objects);
   // Return the object closest to the camera
-  clickedObject = intersects[0].object;
+  var clickedObject = intersects[0].object;
   // Make the camera look clicked object
   controls.target = clickedObject.position;
+  if (controls.target !== sun.position) {
+    camera.position.z = clickedObject.position.z + 55000;
+    camera.position.y = clickedObject.position.y + 55000;
+    camera.position.x = clickedObject.position.x + 55000;    
+  }
 }
