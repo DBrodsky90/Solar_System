@@ -19,35 +19,48 @@ $(function() {
     $(this).toggleClass('white');
   });
 
-  // Click events to switch camera view for each planet
+  // Click event to switch camera view for each planet, and also toggles the Planet Info Box
   $('.planet').click(function() {
+    if ($(this).html() === "Sun") {
+      $('.planet-info').hide();
+    } else {
+      $('.planet-info').show();
+    }
     switch ($(this).html()) {
       case 'Sun':
         changeCameraView(sun);
         break;
       case 'Mercury':
         changeCameraView(mercury);
+        getPlanetInfo(mercury);
         break;
       case 'Venus':
         changeCameraView(venus);
+        getPlanetInfo(venus);
         break;
       case 'Earth':
         changeCameraView(earth);
+        getPlanetInfo(earth);
         break;
       case 'Mars':
         changeCameraView(mars);
+        getPlanetInfo(mars);
         break;
       case 'Jupiter':
         changeCameraView(jupiter);
+        getPlanetInfo(jupiter);
         break;
       case 'Saturn':
         changeCameraView(saturn);
+        getPlanetInfo(saturn);
         break;
       case 'Uranus':
         changeCameraView(uranus);
+        getPlanetInfo(uranus);
         break;
       case 'Neptune':
         changeCameraView(neptune);
+        getPlanetInfo(neptune);
         break;
     }
   })
@@ -73,9 +86,9 @@ function init() {
   camera.position.z = 1000000;
   camera.position.y = 100000;
 
-  //********************//
+  //****************//
   // ORBIT CONTROLS //
-  //********************//
+  //****************//
 
   controls = new THREE.OrbitControls(camera);
   // Set the zoom max and min distance
@@ -427,3 +440,48 @@ function changeCameraView(clickedPlanet) {
     camera.position.x = clickedPlanet.position.x + 55000;    
   }
 }
+
+function getPlanetInfo(planet) {
+  switch (planet) {
+    case mercury:
+      $.get('/planets/1').done(displayPlanetData);
+      break;
+    case venus:
+      $.get('/planets/2').done(displayPlanetData);
+      break;
+    case earth:
+      $.get('/planets/3').done(displayPlanetData);
+      break;
+    case mars:
+      $.get('/planets/4').done(displayPlanetData);
+      break;
+    case jupiter:
+      $.get('/planets/5').done(displayPlanetData);
+      break;
+    case saturn:
+      $.get('/planets/6').done(displayPlanetData);
+      break;
+    case uranus:
+      $.get('/planets/7').done(displayPlanetData);
+      break;
+    case neptune:
+      $.get('/planets/8').done(displayPlanetData);
+      break;  
+  }
+}
+
+function displayPlanetData(info) {
+  $('.planet-name').html(info.name);
+  $('.diameter').html(info.diameter);
+  $('.avg-distance').html(info.distance_from_sun);
+  $('.rotation').html(info.rotation_period);
+  $('.orbit-period').html(info.orbit_period);
+  $('.orbit-velocity').html(info.orbit_velocity);
+  $('.moons').html(info.moons);
+}
+
+
+
+
+
+

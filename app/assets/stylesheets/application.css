@@ -28,7 +28,7 @@ canvas {
 	position: absolute;
 	top: 15px;
 	left: 5px;
-	border: 1px solid rgba(0, 0, 200, 0.5);
+	border: 1px solid rgba(0, 0, 200, 0.7);
 }
 
 .planet {
@@ -40,8 +40,28 @@ canvas {
 	font-size: 20px;
 }
 
-.planet:hover, .white {
+.planet:hover, .white, .planet-info h2 {
 	color: white;
+}
+
+.planet-info {
+	display: none;
+	position: absolute;
+	right: 5px;
+	top: 15px;
+	border: 1px solid rgba(0, 0, 200, 0.7);
+	color: #9C9995;
+}
+
+.planet-info h2, .planet-info h4, .info {
+	margin-left: 20px;
+	margin-right: 20px;
+	margin-top: 10px;
+	margin-bottom: 10px; 
+}
+
+.planet-info h2 {
+	text-align: center;
 }
 
 footer {
