@@ -24,6 +24,26 @@ canvas {
 	height: 100%;
 }
 
+.planet-list {
+	position: absolute;
+	top: 15px;
+	left: 5px;
+	border: 1px solid rgba(0, 0, 200, 0.5);
+}
+
+.planet {
+	color : #9C9995;
+	margin-left: 20px;
+	margin-right: 20px;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	font-size: 20px;
+}
+
+.planet:hover, .white {
+	color: white;
+}
+
 footer {
 	position: absolute;
 	width: 100%;
@@ -39,4 +59,13 @@ footer img {
 	float: right;
 	height: 25px;
 	width: 25px;
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-bottom: 5px;
 }
+
+.mail {
+	width: 30px;
+	height: 30px;
+}
+

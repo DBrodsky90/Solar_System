@@ -12,8 +12,45 @@ $(function() {
   //**************//
   // MOUSE EVENTS //
   //**************//
-  mouseVector = new THREE.Vector3();
-  window.addEventListener( 'click', changeCameraView, false );
+
+  // Make the text color of Planets white when clicked
+  $('.planet').click(function() {
+    $('.planet').removeClass('white');
+    $(this).toggleClass('white');
+  });
+
+  // Click events to switch camera view for each planet
+  $('.planet').click(function() {
+    switch ($(this).html()) {
+      case 'Sun':
+        changeCameraView(sun);
+        break;
+      case 'Mercury':
+        changeCameraView(mercury);
+        break;
+      case 'Venus':
+        changeCameraView(venus);
+        break;
+      case 'Earth':
+        changeCameraView(earth);
+        break;
+      case 'Mars':
+        changeCameraView(mars);
+        break;
+      case 'Jupiter':
+        changeCameraView(jupiter);
+        break;
+      case 'Saturn':
+        changeCameraView(saturn);
+        break;
+      case 'Uranus':
+        changeCameraView(uranus);
+        break;
+      case 'Neptune':
+        changeCameraView(neptune);
+        break;
+    }
+  })
 
 });
 
@@ -326,7 +363,7 @@ function animate() {
   sun.rotation.y+=0.001;
   mercury.rotation.y+=0.001;
   venus.rotation.y+=0.001;
-  earth.rotation.y+=0.01;
+  earth.rotation.y+=0.001;
   mars.rotation.y+=0.001;
   jupiter.rotation.y+=0.001;
   saturn.rotation.y+=0.001;
@@ -381,24 +418,12 @@ function render() {
   renderer.render(scene, camera);
 } 
 
-function changeCameraView(event) {
-  // Set an array of objects that are clickable
-  var objects = [sun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune];
-  var mouse3D = new THREE.Vector3( (event.clientX/window.innerWidth) * 2 - 1,
-  -1*(event.clientY/window.innerHeight) * 2 + 1,
-  0.5 );
-  mouse3D.unproject(camera);
-  mouse3D.sub(camera.position);
-  mouse3D.normalize();
-  var raycaster = new THREE.Raycaster(camera.position, mouse3D);
-  var intersects = raycaster.intersectObjects(objects);
-  // Return the object closest to the camera
-  var clickedObject = intersects[0].object;
+function changeCameraView(clickedPlanet) {
   // Make the camera look clicked object
-  controls.target = clickedObject.position;
+  controls.target = clickedPlanet.position;
   if (controls.target !== sun.position) {
-    camera.position.z = clickedObject.position.z + 55000;
-    camera.position.y = clickedObject.position.y + 55000;
-    camera.position.x = clickedObject.position.x + 55000;    
+    camera.position.z = clickedPlanet.position.z + 55000;
+    camera.position.y = clickedPlanet.position.y + 55000;
+    camera.position.x = clickedPlanet.position.x + 55000;    
   }
 }

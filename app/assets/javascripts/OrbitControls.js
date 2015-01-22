@@ -73,10 +73,10 @@ THREE.OrbitControls = function ( object, domElement ) {
 	this.noKeys = false;
 
 	// The four arrow keys
-	this.keys = { LEFT: 37, UP: 38, RIGHT: 39, BOTTOM: 40 };
+	// this.keys = { LEFT: 37, UP: 38, RIGHT: 39, BOTTOM: 40 };
 
 	// Mouse buttons
-	this.mouseButtons = { ORBIT: THREE.MOUSE.LEFT, ZOOM: THREE.MOUSE.MIDDLE, PAN: THREE.MOUSE.RIGHT };
+	this.mouseButtons = { ORBIT: THREE.MOUSE.LEFT, ZOOM: THREE.MOUSE.MIDDLE};
 
 	////////////
 	// internals
@@ -491,35 +491,35 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 	}
 
-	function onKeyDown( event ) {
+	// function onKeyDown( event ) {
 
-		if ( scope.enabled === false || scope.noKeys === true || scope.noPan === true ) return;
+	// 	if ( scope.enabled === false || scope.noKeys === true || scope.noPan === true ) return;
 
-		switch ( event.keyCode ) {
+	// 	switch ( event.keyCode ) {
 
-			case scope.keys.UP:
-				scope.pan( 0, scope.keyPanSpeed );
-				scope.update();
-				break;
+	// 		case scope.keys.UP:
+	// 			scope.pan( 0, scope.keyPanSpeed );
+	// 			scope.update();
+	// 			break;
 
-			case scope.keys.BOTTOM:
-				scope.pan( 0, - scope.keyPanSpeed );
-				scope.update();
-				break;
+	// 		case scope.keys.BOTTOM:
+	// 			scope.pan( 0, - scope.keyPanSpeed );
+	// 			scope.update();
+	// 			break;
 
-			case scope.keys.LEFT:
-				scope.pan( scope.keyPanSpeed, 0 );
-				scope.update();
-				break;
+	// 		case scope.keys.LEFT:
+	// 			scope.pan( scope.keyPanSpeed, 0 );
+	// 			scope.update();
+	// 			break;
 
-			case scope.keys.RIGHT:
-				scope.pan( - scope.keyPanSpeed, 0 );
-				scope.update();
-				break;
+	// 		case scope.keys.RIGHT:
+	// 			scope.pan( - scope.keyPanSpeed, 0 );
+	// 			scope.update();
+	// 			break;
 
-		}
+	// 	}
 
-	}
+	// }
 
 	function touchstart( event ) {
 
@@ -664,7 +664,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 	this.domElement.addEventListener( 'touchend', touchend, false );
 	this.domElement.addEventListener( 'touchmove', touchmove, false );
 
-	window.addEventListener( 'keydown', onKeyDown, false );
+	// window.addEventListener( 'keydown', onKeyDown, false );
 
 	// force an update at start
 	this.update();
