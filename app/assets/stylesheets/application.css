@@ -40,13 +40,15 @@ canvas {
 	font-size: 20px;
 }
 
-.planet:hover, .white, .planet-info h2 {
+.planet:hover, .white, .planet-info h2, .planet-news a:hover {
 	color: white;
 }
 
 .planet-info {
 	display: none;
 	position: absolute;
+	min-width: 342px;
+	max-width: 342px;
 	right: 5px;
 	top: 15px;
 	border: 1px solid rgba(0, 0, 200, 0.7);
@@ -63,6 +65,30 @@ canvas {
 .planet-info h2 {
 	text-align: center;
 }
+
+.planet-news {
+	display: none;
+	position: absolute;
+	max-width: 342px;
+	right: 5px;
+	top: 265px;
+	border: 1px solid rgba(0, 0, 200, 0.7);
+	color: #9C9995;
+}
+
+.planet-news a {
+	display: block;
+	text-align: center;
+	color: #9C9995;
+	font-weight: bold;
+	margin: 20px;
+}
+
+.planet-news h2 {
+	text-align: center;
+	color: white;
+}
+
 
 footer {
 	position: absolute;

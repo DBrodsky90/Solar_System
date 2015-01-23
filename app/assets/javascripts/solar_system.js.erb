@@ -23,8 +23,10 @@ $(function() {
   $('.planet').click(function() {
     if ($(this).html() === "Sun") {
       $('.planet-info').hide();
+      $('.planet-news').hide();
     } else {
       $('.planet-info').show();
+      // $('.planet-news').show();
     }
     switch ($(this).html()) {
       case 'Sun':
@@ -476,27 +478,35 @@ function getPlanetInfo(planet) {
   switch (planet) {
     case mercury:
       $.get('/planets/1').done(displayPlanetData);
+      $.get('/planets/1/news').done(displayPlanetNews);
       break;
     case venus:
       $.get('/planets/2').done(displayPlanetData);
+      $.get('/planets/2/news').done(displayPlanetNews);
       break;
     case earth:
       $.get('/planets/3').done(displayPlanetData);
+      $.get('/planets/3/news').done(displayPlanetNews);
       break;
     case mars:
       $.get('/planets/4').done(displayPlanetData);
+      $.get('/planets/4/news').done(displayPlanetNews);
       break;
     case jupiter:
       $.get('/planets/5').done(displayPlanetData);
+      $.get('/planets/5/news').done(displayPlanetNews);
       break;
     case saturn:
       $.get('/planets/6').done(displayPlanetData);
+      $.get('/planets/6/news').done(displayPlanetNews);
       break;
     case uranus:
       $.get('/planets/7').done(displayPlanetData);
+      $.get('/planets/7/news').done(displayPlanetNews);
       break;
     case neptune:
       $.get('/planets/8').done(displayPlanetData);
+      $.get('/planets/8/news').done(displayPlanetNews);
       break;  
   }
 }
@@ -509,6 +519,22 @@ function displayPlanetData(info) {
   $('.orbit-period').html(info.orbit_period);
   $('.orbit-velocity').html(info.orbit_velocity);
   $('.moons').html(info.moons);
+}
+
+function displayPlanetNews(news) {
+  var planetNews = $('.planet-news a')
+  planetNews.each(function(linkElement) {
+    console.log(planetNews[linkElement]);
+    var i = 0;
+    news.forEach(function(link) {
+      var headLine = link[1][1];
+      var hrefLink = link[0][1];
+      planetNews[i].innerHTML = headLine;
+      planetNews[i].href = hrefLink;
+      i++;
+    })
+  })
+  $('.planet-news').show();
 }
 
 
