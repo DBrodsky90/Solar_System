@@ -219,6 +219,19 @@ function init() {
   scene.add(earth_orbit);
 
   //******//
+  // MOON //
+  //******//
+
+  // Create the moon texture, geometry and materials and mesh it together
+  var moon_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('moon_texture.jpg') %>");
+  var moon_geom = new THREE.SphereGeometry(2500, 20, 20);
+  var moon_mat = new THREE.MeshLambertMaterial({map: moon_texture});
+  moon = new THREE.Mesh(moon_geom, moon_mat);
+  moon_angle = 0;
+  // Add the moon as a child of earth
+  earth.add(moon);
+
+  //******//
   // MARS //
   //******//
 
@@ -289,11 +302,13 @@ function init() {
   //********//
 
   // Loads the saturn texture
-  var saturn_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('saturn_texture.jpg') %>")
+  var saturn_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('saturn_texture.jpg') %>");
   var saturn_geom = new THREE.SphereGeometry(20000, 20, 20);
   saturn_texture.anistropy = 8;
   var saturn_mat = new THREE.MeshLambertMaterial({map: saturn_texture});
   saturn = new THREE.Mesh(saturn_geom, saturn_mat);
+  // Tilt saturn on its axis a little bit
+  saturn.rotateX(-2.90);
   // Starting position of saturn
   saturn_angle = 350;
   // Creates saturn orbit outline material and geometry
@@ -303,9 +318,16 @@ function init() {
   saturn_orbit_geom.vertices.shift();
   var saturn_orbit = new THREE.Line(saturn_orbit_geom, saturn_orbit_mat);
   saturn_orbit.rotateX(Math.PI/2);
-  // Add the saturn and its orbit outline to the scene
+  // Create Saturn's ring geometry and material
+  var saturn_ring_texture = new THREE.ImageUtils.loadTexture("<%= asset_path('saturn_ring_texture.png') %>");
+  var saturn_ring_geometry = new THREE.RingGeometry( 25000, 45000, 300 );
+  var saturn_ring_material = new THREE.MeshLambertMaterial({map: saturn_ring_texture, side: THREE.DoubleSide, opacity: .1});
+  saturn_ring = new THREE.Mesh( saturn_ring_geometry, saturn_ring_material );
+  saturn_ring.rotateX(30);
+  // Add the saturn and it's rings and the orbit outline to the scene 
   scene.add(saturn);
   scene.add(saturn_orbit);
+  scene.add(saturn_ring);
 
   //********//
   // URANUS //
@@ -398,6 +420,11 @@ function animate() {
   earth.position.z = Math.cos(earth_angle*0.01)*400000;
   earth_angle += Math.PI/180;
 
+  // Moon Revolution
+  moon.position.x = Math.sin(moon_angle*0.09)*25000;
+  moon.position.z = Math.cos(moon_angle*0.09)*25000;
+  moon_angle += Math.PI/180;
+
   // Mars Revolution
   mars.position.x = Math.sin(mars_angle*0.01)*500000;
   mars.position.z = Math.cos(mars_angle*0.01)*500000;
@@ -411,7 +438,11 @@ function animate() {
   // Saturn Revolution
   saturn.position.x = Math.sin(saturn_angle*0.01)*1100000;
   saturn.position.z = Math.cos(saturn_angle*0.01)*1100000;
-  saturn_angle += Math.PI/180;	
+  saturn_angle += Math.PI/180;
+
+  // Saturn's Rings
+  saturn_ring.position.x = saturn.position.x;
+  saturn_ring.position.z = saturn.position.z;	
 
   // Uranus Revolution
   uranus.position.x = Math.sin(uranus_angle*0.01)*1300000;
