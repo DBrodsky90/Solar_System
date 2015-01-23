@@ -406,18 +406,18 @@ function animate() {
 
 
   // Mercury Revolution
-  mercury.position.x = Math.sin(mercury_angle*0.01)*200000;
-  mercury.position.z = Math.cos(mercury_angle*0.01)*200000;
+  mercury.position.x = Math.sin(mercury_angle*0.025)*200000;
+  mercury.position.z = Math.cos(mercury_angle*0.025)*200000;
   mercury_angle += Math.PI/180;
 
   // Venus Revolution
-  venus.position.x = Math.sin(venus_angle*0.01)*300000;
-  venus.position.z = Math.cos(venus_angle*0.01)*300000;
+  venus.position.x = Math.sin(venus_angle*0.025)*300000;
+  venus.position.z = Math.cos(venus_angle*0.025)*300000;
   venus_angle += Math.PI/180;
 
   // Earth Revolution
-  earth.position.x = Math.sin(earth_angle*0.01)*400000;
-  earth.position.z = Math.cos(earth_angle*0.01)*400000;
+  earth.position.x = Math.sin(earth_angle*0.025)*400000;
+  earth.position.z = Math.cos(earth_angle*0.025)*400000;
   earth_angle += Math.PI/180;
 
   // Moon Revolution
@@ -426,18 +426,18 @@ function animate() {
   moon_angle += Math.PI/180;
 
   // Mars Revolution
-  mars.position.x = Math.sin(mars_angle*0.01)*500000;
-  mars.position.z = Math.cos(mars_angle*0.01)*500000;
+  mars.position.x = Math.sin(mars_angle*0.025)*500000;
+  mars.position.z = Math.cos(mars_angle*0.025)*500000;
   mars_angle += Math.PI/180;		 
 
   // Jupiter Revolution
-  jupiter.position.x = Math.sin(jupiter_angle*0.01)*900000;
-  jupiter.position.z = Math.cos(jupiter_angle*0.01)*900000;
+  jupiter.position.x = Math.sin(jupiter_angle*0.025)*900000;
+  jupiter.position.z = Math.cos(jupiter_angle*0.025)*900000;
   jupiter_angle += Math.PI/180;		 
 
   // Saturn Revolution
-  saturn.position.x = Math.sin(saturn_angle*0.01)*1100000;
-  saturn.position.z = Math.cos(saturn_angle*0.01)*1100000;
+  saturn.position.x = Math.sin(saturn_angle*0.025)*1100000;
+  saturn.position.z = Math.cos(saturn_angle*0.025)*1100000;
   saturn_angle += Math.PI/180;
 
   // Saturn's Rings
@@ -445,13 +445,13 @@ function animate() {
   saturn_ring.position.z = saturn.position.z;	
 
   // Uranus Revolution
-  uranus.position.x = Math.sin(uranus_angle*0.01)*1300000;
-  uranus.position.z = Math.cos(uranus_angle*0.01)*1300000;
+  uranus.position.x = Math.sin(uranus_angle*0.025)*1300000;
+  uranus.position.z = Math.cos(uranus_angle*0.025)*1300000;
   uranus_angle += Math.PI/180;	
 
   // Neptune Revoltion	 		  		   
-  neptune.position.x = Math.sin(neptune_angle*0.01)*1500000;
-  neptune.position.z = Math.cos(neptune_angle*0.01)*1500000;
+  neptune.position.x = Math.sin(neptune_angle*0.025)*1500000;
+  neptune.position.z = Math.cos(neptune_angle*0.025)*1500000;
   neptune_angle += Math.PI/180;	
 
   render();
